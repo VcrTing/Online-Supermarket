@@ -1,0 +1,119 @@
+from datetime import datetime
+
+from django.db import models
+from DjangoUeditor.models import UEditorField
+
+# Create your models here.
+
+class GoodsCategory(models.Model):
+    """
+    商品类别
+    """
+    GATEGORY_TYPE = (
+        (1, '一级类目'),
+        (2, '二级类目'),
+        (3, '三级类目')
+    )
+    name = models.CharField(default='', max_length=30, verbose_name='类别名', help_text='类别名')
+    code = models.CharField(default='', max_length=30, verbose_name='类别code', help_text='类别code')
+    desc = models.CharField(default='', max_length=120, verbose_name='类别描述', help_text='类别描述')
+    category_type = models.IntegerField(choices=GATEGORY_TYPE, help_text='类别描述')
+    parent_category = models.ForeignKey('self', null=True, blank=True, verbose_name='父类别', help_text='父类别',
+                                        related_name='sub_cat')
+    is_tab = models.BooleanField(default=False, verbose_name='是否热门', help_text='是否热门')
+
+    add_time = models.DateField(default=datetime.now, verbose_name='添加时间', help_text='添加时间')
+    status = models.NullBooleanField(default=True, verbose_name='数据状态', help_text='数据状态')
+
+    class Meta:
+        verbose_name = '商品类别'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+class GoodsCategoryBrand(models.Model):
+    """
+    品牌名
+    """
+    category = models.ForeignKey(GoodsCategory, null=True, blank=True, verbose_name='商品类目')
+    name = models.CharField(default='', max_length=30, verbose_name='类别名', help_text='类别名')
+    desc = models.TextField(default='', verbose_name='类别描述', help_text='类别描述')
+    image = models.ImageField(max_length=200, upload_to='brands/', verbose_name='图片')
+
+    add_time = models.DateField(default=datetime.now, verbose_name='添加时间', help_text='添加时间')
+    status = models.NullBooleanField(default=True, verbose_name='数据状态', help_text='数据状态')
+
+    class Meta:
+        verbose_name = '品牌'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+class Goods(models.Model):
+    """
+    商品
+    """
+    category = models.ForeignKey(GoodsCategory, null=True, blank=True, verbose_name='商品类目')
+    goods_sn = models.CharField(max_length=50, default='', verbose_name='商品唯一货号')
+    name = models.CharField(max_length=240, verbose_name='商品名', help_text='商品名')
+    click_num = models.IntegerField(default=0, verbose_name='点击数')
+    sold_num = models.IntegerField(default=0, verbose_name='销售量')
+    fav_num = models.IntegerField(default=0, verbose_name='收藏数')
+    goods_num = models.IntegerField(default=0, verbose_name='库存数')
+    market_price = models.FloatField(default=0, verbose_name='市场价格')
+    shop_price = models.FloatField(default=0, verbose_name='本店价格')
+    goods_brief = models.TextField(max_length=300, verbose_name='商品简短描述')
+    goods_desc = UEditorField(verbose_name=u'内容', imagePath='goods/images/', width=900, height=400,
+                              filePath='goods/files/', default='')
+    ship_free = models.BooleanField(default=True, verbose_name='是否免邮')
+    goods_front_image = models.ImageField(upload_to='goods/images/', null=True, blank=True, verbose_name='代表性图片')
+    is_new = models.BooleanField(default=False, verbose_name='是否新品')
+    is_hot = models.BooleanField(default=False, verbose_name='是否热销', help_text='是否热销')
+
+    add_time = models.DateField(default=datetime.now, verbose_name='添加时间', help_text='添加时间')
+    status = models.NullBooleanField(default=True, verbose_name='数据状态', help_text='数据状态')
+
+    class Meta:
+        verbose_name = '商品'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '商品：' + self.name
+
+class GoodsImage(models.Model):
+    """
+    商品轮播图
+    """
+    goods = models.ForeignKey(Goods, verbose_name='商品', related_name='images')
+    image = models.ImageField(upload_to='goods/images/', verbose_name='图片', null=True, blank=True)
+    # image_url = models.CharField(max_length=300, null=True, blank=True, verbose_name='图片url')
+
+    add_time = models.DateField(default=datetime.now, verbose_name='添加时间', help_text='添加时间')
+    status = models.NullBooleanField(default=True, verbose_name='数据状态', help_text='数据状态')
+
+    class Meta:
+        verbose_name = '商品的图片'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.goods.name
+
+class Banner(models.Model):
+    """
+    轮播的商品
+    """
+    goods = models.ForeignKey(Goods, verbose_name='商品')
+    image = models.ImageField(upload_to='banner/', verbose_name='轮播图片')
+    index = models.SmallIntegerField(default=0, verbose_name='轮播顺序')
+
+    add_time = models.DateField(default=datetime.now, verbose_name='添加时间', help_text='添加时间')
+    status = models.NullBooleanField(default=True, verbose_name='数据状态', help_text='数据状态')
+
+    class Meta:
+        verbose_name = '轮播的商品'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.goods.name
