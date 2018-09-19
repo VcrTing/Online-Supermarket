@@ -75,3 +75,21 @@ rest framework:
 
 利用django信号量(signals):
     接收信号，然后作相应的事情
+
+def extensions: 扩展了drf缓存
+
+django-redis: django 连接 redis 作缓存
+
+第三方登录解决方案：social-app-django
+    url: https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
+    平台填写回调页面: http://ip:port/complete/github/
+
+搭建 sentry 错误日志系统：
+    作用之一:
+        分项目管理bug
+
+    需 ubuntu 安装 docker
+        url: https://blog.csdn.net/diligent_lee/article/details/79098302
+
+    docker 配置 sentry 的镜像地址
+        url: https://github.com/getsentry/onpremise

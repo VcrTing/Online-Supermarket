@@ -26,6 +26,18 @@ class UserFavViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.L
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     lookup_field = 'goods_id' # 调整 id 的 source
 
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        goods = instance.goods
+        goods.fav_num += 1
+        goods.save()
+
+    def perform_destroy(self, instance):
+        goods = instance.goods
+        goods.fav_num -= 1
+        goods.save()
+        instance.delete()
+
     def get_queryset(self):
         return UserFav.objects.filter(user=self.request.user)
 

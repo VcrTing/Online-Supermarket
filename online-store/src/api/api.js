@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-let base_host = 'http://127.0.0.1:8000';
+let base_host = 'http://39.107.96.126:8000';
 let host = base_host;
 
 //获取商品类别信息

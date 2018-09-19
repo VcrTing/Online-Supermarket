@@ -139,6 +139,7 @@
                     this.orderInfo = response.data;
                     var totalPrice = 0
                     response.data.goods.forEach(function(entry) {
+                      console.log('entry entry entry =', entry)
                       totalPrice += entry.goods_num*entry.goods.shop_price
                     });
                     this.totalPrice = totalPrice

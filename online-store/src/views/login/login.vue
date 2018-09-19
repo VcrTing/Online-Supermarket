@@ -29,7 +29,7 @@
               <h5>使用第三方帐号登录</h5>
             </li>
             <li class="other-login">
-              <a class="qq" href="http://shop.projectsedu.com:8001/login/qq/"></a>
+              <a class="qq" href="http://39.107.96.126:8000/login/github/"></a>
               <a class="sina" href="http://shop.projectsedu.com:8001/login/weibo/"></a>
               <a class="weixin" href="http://shop.projectsedu.com:8001/login/weixin/"></a>
             </li>

@@ -109,14 +109,15 @@
     created () {
       // 请求购物车商品
       getShopCarts().then((response)=> {
-        console.log(response.data)
+        console.log('get', response.data)
         // 更新store数据
         //this.goods_list = response.data;
         var totalPrice = 0
         this.goods.goods_list = response.data;
         response.data.forEach(function(entry) {
+
           totalPrice += entry.goods.shop_price*entry.nums
-          console.log(entry.goods.shop_price);
+          console.log('entry', entry);
         });
 
         this.goods.totalPrice = totalPrice
@@ -243,7 +244,7 @@
                 post_script:this.post_script,
                 address:this.address,
                 signer_name:this.signer_name,
-                singer_mobile:this.signer_mobile,
+                signer_mobile:this.signer_mobile,
                 order_mount:this.totalPrice
               }
             ).then((response)=> {
